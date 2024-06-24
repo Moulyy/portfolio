@@ -7,7 +7,7 @@ export default function ThemeSwitchButton() {
 
   return (
     <button
-      className="rounded-lg"
+      className="rounded-lg hover:text-primary"
       onClick={() => toggleTheme(isDark ? "light" : "dark")}
     >
       {isDark ? <Sun /> : <Moon /> }

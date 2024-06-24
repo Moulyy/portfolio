@@ -29,9 +29,9 @@ export default function useTheme() {
   };
 
   function toggleTheme(theme: Theme) : void {
-    setTheme(theme);
     window.localStorage.setItem('theme', theme);
-    document.body.classList.toggle('dark')
+    document.body.classList.toggle('dark', theme === 'dark');
+    setTheme(theme);
   }
 
   return { theme, toggleTheme }

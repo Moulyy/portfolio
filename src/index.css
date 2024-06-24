@@ -12,8 +12,12 @@
   html,
   body {
     height: 100%;
-    @apply bg-light text-black;
+    @apply bg-[#f8f9fa] text-[#121212];
     font-family: 'Poppins', sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   .dark html,
