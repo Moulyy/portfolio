@@ -1,22 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export type Theme = 'light' | 'dark';
 
 export default function useTheme() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
-
-  useEffect(() => {
-    if (window && window.localStorage) {
-      window.localStorage.setItem('theme', theme);
-    }
-
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [theme]);
 
   function getInitialTheme() : Theme {
     if (window && window.localStorage) {
@@ -30,9 +17,17 @@ export default function useTheme() {
 
   function toggleTheme(theme: Theme) : void {
     window.localStorage.setItem('theme', theme);
-    document.body.classList.toggle('dark', theme === 'dark');
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
     setTheme(theme);
   }
 
-  return { theme, toggleTheme }
+  function switchTheme() {
+    toggleTheme(theme === 'dark' ? 'light' : 'dark');
+  }
+
+  return { theme, switchTheme }
 }

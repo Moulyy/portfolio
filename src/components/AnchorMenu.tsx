@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { forwardRef, useEffect, useRef, useState } from "react"
 
 type AnchorMenuItem = {
   title: string
@@ -6,9 +6,8 @@ type AnchorMenuItem = {
 }
 
 interface AnchorMenuItemProps extends AnchorMenuItem {
-  index: number;
   isActive: boolean;
-  onItemClick: (index: number) => void;
+  onItemClick: () => void;
 }
 
 interface AnchorMenuProps {
@@ -19,27 +18,29 @@ export default function AnchorMenu({ items }: AnchorMenuProps) {
   
   const [activeMenu, setActiveMenu] = useState(0)
   const [barHeight, setBarHeight] = useState(0);
-  const menuRef = useRef<HTMLUListElement>(null);
+  const menuRef = useRef<(HTMLLIElement|null)[] >([]);
 
   useEffect(() => {
-    if (menuRef.current) {
-      const menuItems = Array.from(menuRef.current.querySelectorAll("li")) as HTMLLIElement[];
-      const selectedItem = menuItems[activeMenu];
-      const cumulativeHeight = selectedItem.offsetTop + selectedItem.offsetHeight;
-      setBarHeight(cumulativeHeight);
-    }
-  }, [activeMenu]);
+      if (menuRef?.current[activeMenu]) {
+        const selectedItem = menuRef.current[activeMenu]!;
+        const cumulativeHeight = selectedItem.offsetTop + selectedItem.offsetHeight;
+        setBarHeight(cumulativeHeight);
+      }
+  }, [activeMenu, setBarHeight]);
   
   return (
-    <ul className="relative flex flex-col gap-8" ref={menuRef}>
-      <div className="absolute left-0 w-1 bg-primary dark:bg-green-400 transition-height duration-500 ease-in-out" style={{ height: `${barHeight}px`}}></div>
+    <ul className="relative flex flex-col gap-8">
+      <div 
+        className="absolute left-0 w-1 bg-primary dark:bg-green-400 transition-height duration-500 ease-in-out"
+        aria-hidden="true"
+        style={{ height: `${barHeight}px`}}
+      ></div>
       { items.map((item, index) => ( 
           <AnchorMenuItem 
+            ref={(element) => menuRef.current[index] = element}
             key={index}
-            title={item.title}
-            anchor={item.anchor} 
-            index={index}
-            onItemClick={setActiveMenu}
+            {...item} 
+            onItemClick={() => setActiveMenu(index)}
             isActive={activeMenu === index}
           /> 
       ))}
@@ -47,14 +48,10 @@ export default function AnchorMenu({ items }: AnchorMenuProps) {
   )
 }
 
-function AnchorMenuItem({ title, anchor, index, onItemClick , isActive}: AnchorMenuItemProps) {
-
-  function handleClickOnItem() {
-    onItemClick(index)
-  }
+const AnchorMenuItem = forwardRef<HTMLLIElement, AnchorMenuItemProps>(function({ title, anchor, onItemClick , isActive}, ref) {
   return (
-    <li className={`px-4 text-xl leading-5 ${isActive ? "text-primary" : ""}`} onClick={handleClickOnItem}>
+    <li ref={ref} className={`px-4 text-xl leading-5 ${isActive ? "text-primary" : ""}`} onClick={onItemClick}>
       <a href={anchor}>{title}</a>
     </li>
   )
-}
+})

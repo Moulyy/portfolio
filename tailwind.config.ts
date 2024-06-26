@@ -13,7 +13,7 @@ export default {
         primary: '#57cc99'
       },
       transitionProperty: {
-        'height': 'height'
+        'height': 'height',
       }
     },
     fontFamily: {
@@ -26,7 +26,7 @@ export default {
       }
     },
     animation: {
-      'zoom-back': 'zoomBack 1s ease-out forwards',
+      'zoom-back': 'zoomBack 1s ease-out var(--delay) forwards',
     }
   },
   plugins: [],

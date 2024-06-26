@@ -25,7 +25,7 @@ export default function Skills() {
     <section id="skills" className="scroll-mt-24">
       <h1 className="font-bold text-primary text-center text-2xl mb-2">Skills</h1>
       <div className="flex flex-wrap gap-3">
-        <DelayedList items={skillsList} delay={300} />
+        <DelayedList items={skillsList} delay={200} />
       </div>
       
     </section>

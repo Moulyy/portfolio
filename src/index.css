@@ -1,13 +1,9 @@
 @tailwind base;
 
 @layer base {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-  * {
-    margin: 0;
+
+  :root {
+    height: 100%;
   }
   html,
   body {
@@ -20,9 +16,12 @@
     scroll-behavior: smooth;
   }
 
-  .dark html,
-  .dark body {
+  body.dark {
     @apply bg-dark text-white; /* Mode sombre */
+  }
+
+  div#root {
+    height: 100%;
   }
 }
 @tailwind components;

@@ -1,14 +1,17 @@
-import useTheme from "../hooks/useTheme"
+import { Theme } from "../hooks/useTheme"
 import { Moon, Sun  } from 'lucide-react';
 
-export default function ThemeSwitchButton() {
-  const { theme, toggleTheme } = useTheme()
-  const isDark = theme === "dark"
+type ThemeSwitchButtonProps = {
+  theme: Theme;
+  onClick: () => void;
+}
 
+export default function ThemeSwitchButton({theme, onClick} : ThemeSwitchButtonProps) {
+  const isDark = theme === "dark";
   return (
     <button
       className="rounded-lg hover:text-primary"
-      onClick={() => toggleTheme(isDark ? "light" : "dark")}
+      onClick={onClick}
     >
       {isDark ? <Sun /> : <Moon /> }
     </button>
